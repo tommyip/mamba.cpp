@@ -1,0 +1,10 @@
+[[language]]
+name = "objective-cpp"
+scope = "source.objc++"
+roots = ["meson.build"]
+language-id = "objective-cpp"
+file-types = ["h", "mm"]
+comment-token = "//"
+indent = { tab-width = 4, unit = "    " }
+language-servers = ["clangd"]
+grammar = "cpp"

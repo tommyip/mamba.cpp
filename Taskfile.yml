@@ -1,0 +1,5 @@
+version: '3'
+
+tasks:
+  default: meson compile -C build
+  format: clang-format -i *.mm *.h
