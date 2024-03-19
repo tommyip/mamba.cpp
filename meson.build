@@ -19,3 +19,17 @@ executable('mamba',
   sources : src,
   dependencies : deps,
   install : true)
+
+xcrun = find_program('xcrun')
+
+kernels_ir = custom_target('kernels.ir',
+  input : 'kernels.metal',
+  output : 'kernels.ir',
+  command : [xcrun, '-sdk', 'macosx', 'metal', '-o', '@OUTPUT@', '-c', '@INPUT@'])
+
+custom_target('kernels.metallib',
+  input : kernels_ir,
+  output : 'kernels.metallib',
+  command : [xcrun, '-sdk', 'macosx', 'metallib', '-o', '@OUTPUT@', '@INPUT@'],
+  install : true,
+  install_dir : '.')

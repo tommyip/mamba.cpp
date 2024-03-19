@@ -8,3 +8,15 @@ comment-token = "//"
 indent = { tab-width = 4, unit = "    " }
 language-servers = ["clangd"]
 grammar = "cpp"
+auto-format = true
+
+[[language]]
+name = "metal"
+roots = []
+scope = "source.metal"
+injection-regex = "metal"
+file-types = ["metal"]
+comment-token = "//"
+indent = { tab-width = 4, unit = "    " }
+grammar = "cpp"
+auto-format = true

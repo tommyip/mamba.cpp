@@ -2,3 +2,5 @@ BasedOnStyle: WebKit
 
 BreakBeforeBraces: Attach
 ColumnLimit: 100
+AlignAfterOpenBracket: BlockIndent
+BinPackParameters: false

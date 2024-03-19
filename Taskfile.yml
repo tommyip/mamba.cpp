@@ -1,5 +1,13 @@
 version: '3'
 
+silent: true
+
 tasks:
-  default: meson compile -C build
+  default:
+    - task: build
+  build: meson compile -C build
+  run:
+    - task: default
+    - ./build/mamba
+
   format: clang-format -i *.mm *.h
