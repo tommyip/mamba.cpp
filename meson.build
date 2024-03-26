@@ -4,19 +4,29 @@ project('mamba', 'objcpp',
     'warning_level=3',
     'cpp_std=c++17'])
 
+# Disable warnings from libraries
+add_project_arguments(
+  '--system-header-prefix=Metal/',
+  '-Wno-c99-extensions',
+  language : 'objcpp')
+
+gguf_tools_sp = subproject('gguf-tools')
+gguflib_dep = gguf_tools_sp.get_variable('gguflib_dep')
+
 deps = [
   dependency('Foundation'),
   dependency('Metal'),
   dependency('QuartzCore'),
-  dependency('MetalPerformanceShaders')]
-
-src = [
-  'mamba.mm',
-  'ml.mm',
-  'mtl_impl.mm']
+  dependency('MetalPerformanceShaders'),
+  gguflib_dep]
 
 executable('mamba',
-  sources : src,
+  sources : ['mamba.mm', 'ml.mm', 'mtl_impl.mm'],
+  dependencies : deps,
+  install : true)
+
+executable('test_mamba',
+  sources : ['ml.mm', 'mtl_impl.mm', 'tests/test_mamba.mm'],
   dependencies : deps,
   install : true)
 

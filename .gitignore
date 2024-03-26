@@ -2,3 +2,7 @@
 # Generated Metal libraries
 *.ir
 *.metallib
+# Subprojects
+/subprojects/gguf-tools/
+__pycache__/
+*.gguf

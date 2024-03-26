@@ -9,5 +9,8 @@ tasks:
   run:
     - task: default
     - ./build/mamba
-
+  test:
+    - task: default
+    - pytest
   format: clang-format -i *.mm *.h
+  refresh-deps: meson subprojects update --reset

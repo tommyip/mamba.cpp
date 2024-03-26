@@ -1,4 +1,5 @@
 #include <metal_stdlib>
+#include <metal_math>
 using namespace metal;
 
 /**
@@ -18,6 +19,6 @@ kernel void discretize(
 ) {
     float delta_val = delta[d * gid.y + gid.x];
     for (uint i = 0; i < n; ++i) {
-         deltaA[d * n * gid.y + n * gid.x + i] = delta_val * A[n * gid.x + i];
+         deltaA[d * n * gid.y + n * gid.x + i] = exp(delta_val * A[n * gid.x + i]);
     }
 }

@@ -1,14 +1,13 @@
-#include <random>
 #define MAX_DIMS 4
 
+#include <Metal/Metal.hpp>
+#include <MetalPerformanceShaders/MetalPerformanceShaders.h>
 #include <cstdint>
 #include <memory>
-#pragma clang diagnostic push
-#pragma clang diagnostic ignored "-Wgnu-anonymous-struct"
-#pragma clang diagnostic ignored "-Wnested-anon-types"
-#include <Metal/Metal.hpp>
-#pragma clang diagnostic pop
-#include <MetalPerformanceShaders/MetalPerformanceShaders.h>
+#include <random>
+extern "C" {
+#include "subprojects/gguf-tools/gguflib.h"
+}
 
 class ML {
 public:
@@ -34,6 +33,7 @@ public:
     static Tensor* randn(uint64_t d0, uint64_t d1, MTL::Device* device, Rng& rng);
     template <typename Rng>
     static Tensor* randn(uint64_t d0, uint64_t d1, uint64_t d2, MTL::Device* device, Rng& rng);
+    static Tensor* from_gguf(gguf_tensor* tensor, MTL::Device* device);
     size_t n_elem() const;
     size_t buf_size() const;
     id<MTLBuffer> buf_id() const;

@@ -1,0 +1,5 @@
+[wrap-git]
+url = https://github.com/antirez/gguf-tools
+revision = 3e5c0a464d25d03dcaf95c23dc9850747e829058
+depth = 1
+patch_directory = gguf-tools

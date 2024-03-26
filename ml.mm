@@ -5,6 +5,7 @@
     exit(-1);
 
 #include "ml.h"
+#include <Metal/Metal.hpp>
 #include <MetalPerformanceShaders/MetalPerformanceShaders.h>
 #include <algorithm>
 #include <cstdint>
@@ -14,11 +15,6 @@
 #include <iostream>
 #include <memory>
 #include <random>
-#pragma clang diagnostic push
-#pragma clang diagnostic ignored "-Wgnu-anonymous-struct"
-#pragma clang diagnostic ignored "-Wnested-anon-types"
-#include <Metal/Metal.hpp>
-#pragma clang diagnostic pop
 
 ML* ML::init() {
     ML* ml = new ML {};
@@ -98,6 +94,14 @@ template Tensor* Tensor::randn(uint64_t d0, MTL::Device* device, std::mt19937& r
 template Tensor* Tensor::randn(uint64_t d0, uint64_t d1, MTL::Device* device, std::mt19937& rng);
 template Tensor*
 Tensor::randn(uint64_t d0, uint64_t d1, uint64_t d2, MTL::Device* device, std::mt19937& rng);
+
+Tensor* Tensor::from_gguf(gguf_tensor* tensor, MTL::Device* device) {
+    uint64_t dims[MAX_DIMS];
+    std::reverse_copy(
+        std::begin(tensor->dim), std::begin(tensor->dim) + tensor->ndim, std::begin(dims)
+    );
+    return new Tensor(tensor->ndim, dims, tensor->bsize, (float*)tensor->weights_data, device);
+}
 
 size_t Tensor::n_elem() const {
     size_t n = dims[0];
@@ -252,7 +256,7 @@ void MambaBlock::discretize(
     cmd_enc->setBuffer(B.data, 0, 5);
     cmd_enc->setBuffer(deltaA.data, 0, 6);
     cmd_enc->setBuffer(deltaB_u.data, 0, 7);
-    MTL::Size threads_per_grid = MTL::Size::Make(l, d, 1);
+    MTL::Size threads_per_grid = MTL::Size::Make(d, l, 1);
     NS::UInteger thread_group_w = discretizePSO->threadExecutionWidth();
     NS::UInteger thread_group_h = discretizePSO->maxTotalThreadsPerThreadgroup() / thread_group_w;
     MTL::Size threads_per_thread_group = MTL::Size::Make(thread_group_w, thread_group_h, 1);
