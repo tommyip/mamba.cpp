@@ -61,6 +61,8 @@ def test_mamba_block_discretize():
     A = torch.randn(d, n)
     B = torch.randn(l, n)
     deltaA_expected = torch.exp(torch.einsum('ld, dn -> ldn', delta, A))
+    deltaB_u_expected = torch.einsum('ld, ln, ld -> ldn', delta, B, u)
     res = execute_test_fn('mamba_block_discretize', {
                           'u': u, 'delta': delta, 'A': A, 'B': B})
     assert torch.allclose(res['deltaA'], deltaA_expected)
+    assert torch.allclose(res['deltaB_u'], deltaB_u_expected)

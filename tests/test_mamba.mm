@@ -74,7 +74,7 @@ Tensors test_mamba_block_discretize(Tensors& in, ML& ml) {
     Tensor* deltaB_u = Tensor::zeros(l, d, n, ml.device);
     MambaBlock block(ml);
     block.discretize(*u, *delta, *A, *B, *deltaA, *deltaB_u, ml);
-    return { { "deltaA", deltaA }, { "deltaB", deltaB_u } };
+    return { { "deltaA", deltaA }, { "deltaB_u", deltaB_u } };
 }
 
 const std::map<std::string, Tensors (*)(Tensors&, ML&)> TEST_FNS

@@ -17,8 +17,12 @@ kernel void discretize(
     device float* deltaB_u,
     uint2 gid [[thread_position_in_grid]]
 ) {
-    float delta_val = delta[d * gid.y + gid.x];
+    uint ld_idx = d * gid.y + gid.x;
+    float delta_val = delta[ld_idx];
+    float delta_u_val = delta_val * u[ld_idx];
     for (uint i = 0; i < n; ++i) {
-         deltaA[d * n * gid.y + n * gid.x + i] = exp(delta_val * A[n * gid.x + i]);
+        uint ldn_idx = d * n * gid.y + n * gid.x + i;
+        deltaA[ldn_idx] = exp(delta_val * A[n * gid.x + i]);
+        deltaB_u[ldn_idx] = delta_u_val * B[n * gid.y + i];
     }
 }
